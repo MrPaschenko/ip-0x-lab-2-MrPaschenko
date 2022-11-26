@@ -13,4 +13,13 @@ function parse(string) {
   return array;
 }
 
+class CalculatorState {
+  constructor(screen, firstNumber, op, startSecondNumber) {
+    this.screen = screen;
+    this.firstNumber = firstNumber;
+    this.op = op;
+    this.startSecondNumber = startSecondNumber;
+  }
+}
+
 console.log(parse(string));
