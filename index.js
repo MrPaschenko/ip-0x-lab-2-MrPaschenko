@@ -20,9 +20,9 @@ class CalculatorState {
 }
 
 function handleKeyPress(calculatorState, pressedKeyName) {
-  switch (pressedKeyName) {
-  case '1' :
-    const int = parseInt(pressedKeyName);
+  const parsedInt = parseInt(pressedKeyName);
+  if (parsedInt >= 1 && parsedInt <= 9) {
+    const int = parsedInt;
 
     if (calculatorState.startSecondNumber) {
       calculatorState.screen = int;
@@ -31,25 +31,38 @@ function handleKeyPress(calculatorState, pressedKeyName) {
     }
 
     calculatorState.startSecondNumber = false;
-    break;
-  case '+' || '-' || '*' || '/':
+  }
+
+  if (pressedKeyName === '+' ||
+    pressedKeyName === '-' ||
+    pressedKeyName === '*' ||
+    pressedKeyName === '/') {
+
     calculatorState.op = pressedKeyName;
     calculatorState.startSecondNumber = true;
     calculatorState.firstNumber = calculatorState.screen;
-    break;
-  case '=':
-    const firstNumber = calculatorState.screen;
-    const operation = calculatorState.op;
-    const secondNumber = calculatorState.firstNumber;
-
-    const answer = eval(`${firstNumber} ${operation} ${secondNumber}`);
-    calculatorState.screen = answer;
-    break;
   }
+
+  if (pressedKeyName === '=') {
+    const firstNum = calculatorState.screen;
+    const operation = calculatorState.op;
+    const secondNum = calculatorState.firstNumber;
+
+    calculatorState.screen = eval(`${firstNum} ${operation} ${secondNum}`);
+  }
+}
+
+function calculate(stringArray) {
+  const newCalculatorState = new CalculatorState(0, 0, '', true);
+  for (const element of stringArray) {
+    handleKeyPress(newCalculatorState, element);
+  }
+  return newCalculatorState.screen;
 }
 
 module.exports = {
   parse,
   handleKeyPress,
-  CalculatorState
+  CalculatorState,
+  calculate
 };

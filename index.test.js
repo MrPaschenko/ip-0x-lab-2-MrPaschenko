@@ -3,10 +3,9 @@
 const {
   parse,
   handleKeyPress,
-  CalculatorState
+  CalculatorState,
+  calculate
 } = require('./index');
-
-// let class = new CalculatorState()
 
 test('Parse string', () => {
   const string = '1 2 3 + 4 5 6 = ';
@@ -30,3 +29,12 @@ test('Change calculator state', () => {
   });
 });
 
+test('Calculate 1 + 1', () => {
+  const stringArray = ['2', '+', '2', '='];
+  expect(calculate(stringArray)).toEqual(4);
+});
+
+test('Calculate 123 + 456', () => {
+  const stringArray = ['1', '2', '3', '+', '4', '5', '6', '='];
+  expect(calculate(stringArray)).toEqual(579);
+});
