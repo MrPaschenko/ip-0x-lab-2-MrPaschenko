@@ -60,6 +60,9 @@ function calculate(stringArray) {
   return newCalculatorState.screen;
 }
 
+const newString = String(calculate(parse(string)));
+fs.writeFileSync('./output.txt', newString);
+
 module.exports = {
   parse,
   handleKeyPress,
