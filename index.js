@@ -1,9 +1,6 @@
 'use strict';
 
 const fs = require('fs');
-module.exports = {
-  parse,
-};
 
 const string = fs.readFileSync('./input.txt', 'utf8');
 
@@ -22,4 +19,37 @@ class CalculatorState {
   }
 }
 
-console.log(parse(string));
+function handleKeyPress(calculatorState, pressedKeyName) {
+  switch (pressedKeyName) {
+  case '1' :
+    const int = parseInt(pressedKeyName);
+
+    if (calculatorState.startSecondNumber) {
+      calculatorState.screen = int;
+    } else {
+      calculatorState.screen = calculatorState.screen * 10 + int;
+    }
+
+    calculatorState.startSecondNumber = false;
+    break;
+  case '+' || '-' || '*' || '/':
+    calculatorState.op = pressedKeyName;
+    calculatorState.startSecondNumber = true;
+    calculatorState.firstNumber = calculatorState.screen;
+    break;
+  case '=':
+    const firstNumber = calculatorState.screen;
+    const operation = calculatorState.op;
+    const secondNumber = calculatorState.firstNumber;
+
+    const answer = eval(`${firstNumber} ${operation} ${secondNumber}`);
+    calculatorState.screen = answer;
+    break;
+  }
+}
+
+module.exports = {
+  parse,
+  handleKeyPress,
+  CalculatorState
+};
